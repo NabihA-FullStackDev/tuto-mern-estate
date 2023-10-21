@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -17,6 +18,12 @@ const SignUp = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      // Todo: ajouter une validation des données plus propre
+      if (!formData.username || !formData.email || !formData.password) {
+        setLoading(false);
+        setError("Wrong informations");
+        return;
+      }
       setLoading(true);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
@@ -71,6 +78,7 @@ const SignUp = () => {
         >
           {loading ? "Loading..." : "Sign Up"}
         </button>
+        <OAuth/>
       </form>
       <div className="flex gap-2 mt-5">
         <p>Have an account?</p>
